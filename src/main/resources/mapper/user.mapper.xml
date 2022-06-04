@@ -30,7 +30,7 @@
         FROM USER
     </select>
 
-    <insert id="saveUser" parameterType="map">
+    <insert id="saveUser" parameterType="map" keyProperty="sq" useGeneratedKeys="true">
         INSERT INTO USER (name, phone, post, address1, address2, gender) values (#{name}, #{phone}, #{post}, #{address1}, #{address2}, #{gender})
     </insert>
 
