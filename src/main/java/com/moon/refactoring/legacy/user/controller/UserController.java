@@ -1,6 +1,6 @@
-package com.moon.blog.legacy.user.controller;
+package com.moon.refactoring.legacy.user.controller;
 
-import com.moon.blog.legacy.user.service.UserService;
+import com.moon.refactoring.legacy.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

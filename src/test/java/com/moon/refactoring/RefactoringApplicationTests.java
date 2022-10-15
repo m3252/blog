@@ -1,10 +1,10 @@
-package com.moon.blog;
+package com.moon.refactoring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BlogApplicationTests {
+class RefactoringApplicationTests {
 
     @Test
     void contextLoads() {

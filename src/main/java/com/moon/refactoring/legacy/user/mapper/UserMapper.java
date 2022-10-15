@@ -1,4 +1,4 @@
-package com.moon.blog.legacy.user.mapper;
+package com.moon.refactoring.legacy.user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

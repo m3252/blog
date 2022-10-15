@@ -1,6 +1,6 @@
-package com.moon.blog.legacy.user.service;
+package com.moon.refactoring.legacy.user.service;
 
-import com.moon.blog.legacy.user.mapper.UserMapper;
+import com.moon.refactoring.legacy.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
