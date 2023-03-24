@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moon.refactoring.legacy.mapper.TransactionMapper">
+
+    <insert id="saveDeposit" parameterType="map">
+        INSERT INTO transactions (id, account_id, amount, type)
+        VALUES (#{id}, #{accountId}, #{amount}, 'DEPOSIT')
+    </insert>
+
+    <insert id="saveWithdrawal" parameterType="map">
+        INSERT INTO transactions (id, account_id, amount, type)
+        VALUES (#{id}, #{accountId}, #{amount}, 'WITHDRAW')
+    </insert>
+
+    <insert id="saveTransferFrom" parameterType="map">
+        INSERT INTO transactions (id, account_id, amount, type)
+        VALUES (#{id}, #{accountId}, -#{amount}, 'TRANSFER_FROM')
+    </insert>
+
+    <insert id="saveTransferTo" parameterType="map">
+        INSERT INTO transactions (id, account_id, amount, type)
+        VALUES (#{id}, #{accountId}, #{amount}, 'TRANSFER_TO')
+    </insert>
+</mapper>
