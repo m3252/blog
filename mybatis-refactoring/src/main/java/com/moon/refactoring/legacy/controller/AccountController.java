@@ -24,10 +24,10 @@ public class AccountController {
         return accountService.getAccount(param);
     }
 
-    @PutMapping("/api/accounts/deposit")
-    public Map<String, Object> deposit(Map<String, Object> param) {
+    @PutMapping("/api/accounts")
+    public Map<String, Object> updateAccount(Map<String, Object> param) {
         Map<String, Object> result = new HashMap<>();
-        int execute = accountService.deposit(param);
+        int execute = accountService.updateAccount(param);
         if (execute > 0) {
             result.put("resultCode", "200");
         } else {

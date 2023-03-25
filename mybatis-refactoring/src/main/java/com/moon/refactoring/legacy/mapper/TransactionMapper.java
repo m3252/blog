@@ -8,12 +8,5 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface TransactionMapper {
-    int saveDeposit(Map<String, Object> param);
-
-    int saveWithdrawal(Map<String, Object> param);
-
-    int saveTransferFrom(Map<String, Object> param);
-
-    int saveTransferTo(Map<String, Object> param);
-
+    int saveTransaction(Map<String, Object> param);
 }

@@ -22,10 +22,10 @@ public class AccountService {
     }
 
     @Transactional
-    public int deposit(Map<String, Object> param) {
+    public int updateAccount(Map<String, Object> param) {
         int executeAccount = accountMapper.updateAccount(param);
         if (executeAccount > 0) {
-            return transactionMapper.saveDeposit(param);
+            return transactionMapper.saveTransaction(param);
         }
         return executeAccount;
     }
