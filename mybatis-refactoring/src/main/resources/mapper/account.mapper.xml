@@ -1,34 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.moon.refactoring.legacy.mapper.AccountMapper">
+<mapper namespace="com.moon.refactoring.mapper.AccountMapper">
 
-    <select id="getAccount" parameterType="int" resultType="map">
+    <!-- 계좌와 거래 내역을 함께 조회하는 SQL 매핑 -->
+    <resultMap id="accountWithTransactions" type="Account">
+        <id property="id" column="id"/>
+        <result property="balance" column="balance"/>
+        <collection property="transactions"
+                    ofType="Transaction"
+                    select="getTransactionsByAccountId"/>
+    </resultMap>
+
+    <!-- 계좌의 거래 내역을 조회하는 SQL 매핑 -->
+    <select id="getTransactionsByAccountId" resultMap="transactionResultMap">
+        SELECT id, account_id, amount, type
+        FROM transactions
+        WHERE account_id = #{accountId}
+    </select>
+
+    <select id="getAccountWithTransactions" resultMap="accountWithTransactions">
         SELECT id, balance
         FROM accounts
         WHERE id = #{id}
     </select>
 
-    <update id="updateAccount" parameterType="map">
-        <choose>
-            <when test="type == 'DEPOSIT'">
-                UPDATE accounts SET balance = balance + #{amount}
-                WHERE id = #{accountId};
-            </when>
-            <when test="type == 'WITHDRAW'">
-                UPDATE accounts SET balance = balance - #{amount}
-                WHERE id = #{accountId} AND balance >= #{amount};
-            </when>
-            <when test="type == 'TRANSFER_FROM'">
-                UPDATE accounts SET balance = balance - #{amount}
-                WHERE id = #{fromAccountId} AND balance >= #{amount};
-            </when>
-            <when test="type == 'TRANSFER_TO'">
-                UPDATE accounts SET balance = balance + #{amount}
-                WHERE id = #{toAccountId};
-            </when>
-        </choose>
+
+
+    <!-- 계좌의 잔액을 갱신하는 SQL 매핑 -->
+    <update id="updateBalance" parameterType="Account">
+        UPDATE accounts
+        SET balance = #{balance}
+        WHERE id = #{id};
+
+        <foreach item="id" collection="transactions" open="(" separator="," close=")">
+            <!-- 거래 내역을 추가하는 SQL 매핑 -->
+            INSERT INTO transactions (id, account_id, amount, type)
+            VALUES (#{id}, #{accountId}, #{amount}, #{type})
+            ON DUPLICATE KEY UPDATE id = id
+        </foreach>
+
     </update>
-
-
 </mapper>
