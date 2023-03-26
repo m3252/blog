@@ -3,26 +3,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.moon.refactoring.mapper.AccountMapper">
 
-    <!-- 계좌와 거래 내역을 함께 조회하는 SQL 매핑 -->
+    <!-- has many 객체 연관 관계를 설정 -->
     <resultMap id="accountWithTransactions" type="Account">
         <id property="id" column="id"/>
         <result property="balance" column="balance"/>
         <collection property="transactions"
                     ofType="Transaction"
-                    select="getTransactionsByAccountId"/>
+                    select="selectTransactionsByAccountId"/>
     </resultMap>
 
-    <!-- 계좌의 거래 내역을 조회하는 SQL 매핑 -->
-    <select id="getTransactionsByAccountId" resultMap="transactionResultMap">
-        SELECT id, account_id, amount, type
-        FROM transactions
-        WHERE account_id = #{accountId}
-    </select>
-
-    <select id="getAccountWithTransactions" resultMap="accountWithTransactions">
+    <!-- 계좌 잔액을 조회하는 SQL 매핑 -->
+    <select id="findAccountWithTransactions" resultMap="accountWithTransactions">
         SELECT id, balance
         FROM accounts
         WHERE id = #{id}
+    </select>
+
+    <!-- 계좌의 거래 내역을 조회하는 SQL 매핑 -->
+    <select id="selectTransactionsByAccountId" resultType="Transaction">
+        SELECT id, account_id, amount, type
+        FROM transactions
+        WHERE account_id = #{accountId}
     </select>
 
 
@@ -33,10 +34,10 @@
         SET balance = #{balance}
         WHERE id = #{id};
 
-        <foreach item="id" collection="transactions" open="(" separator="," close=")">
+        <foreach item="transaction" collection="transactions" separator=";" close=";">
             <!-- 거래 내역을 추가하는 SQL 매핑 -->
-            INSERT INTO transactions (id, account_id, amount, type)
-            VALUES (#{id}, #{accountId}, #{amount}, #{type})
+            INSERT INTO transactions (account_id, amount, type)
+            VALUES (#{transaction.accountId}, #{transaction.amount}, #{transaction.type})
             ON DUPLICATE KEY UPDATE id = id
         </foreach>
 

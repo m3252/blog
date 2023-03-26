@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository {
     Account findAccountWithTransactions(Long accountId);
+
+    void updateBalance(Account account);
 }

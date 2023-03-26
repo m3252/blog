@@ -1,10 +1,8 @@
 package com.moon.refactoring.account;
 
-import com.moon.refactoring.legacy.mapper.AccountMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class WithdrawalService {
@@ -17,5 +15,6 @@ public class WithdrawalService {
     public void withdraw(Long accountId, BigDecimal withdrawalAmount) {
         Account account = accountRepository.findAccountWithTransactions(accountId);
         account.withdraw(withdrawalAmount);
+        accountRepository.updateBalance(account);
     }
 }
